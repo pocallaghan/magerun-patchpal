@@ -2,12 +2,14 @@
 
 namespace TiB\PatchPal\Magento\Command\Compat;
 
-use N98\Magento\Command\AbstractMagentoCommand;
+use TiB\PatchPal\Check\CodePool;
+use TiB\PatchPal\Magento\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CodePoolCommand extends AbstractMagentoCommand
+
+class CodePoolCommand extends AbstractCommand
 {
     const MSG_COMPLETE = 'Code pool check found %s collision(s).';
 
@@ -27,8 +29,16 @@ class CodePoolCommand extends AbstractMagentoCommand
             return;
         }
 
-        // @todo - perform checks
-        $collisions = array();
+        $root = $this->getApplication()->getMagentoRootFolder();
+        $touchedFiles = $this->harvestChangeset($input->getArgument('file_path'));
+
+        $check = new CodePool($root);
+        $collisions = $check->check($touchedFiles);
+        if (count($collisions)) {
+            $headings = array('Original Path', 'Overload Path');
+            $t = $this->getHelper('table');
+            $t->setHeaders($headings)->renderByFormat($output, $collisions);
+        }
 
         $output->writeln('<info>Done: <comment>'.sprintf(self::MSG_COMPLETE, count($collisions)).'</comment></info>');
     }
