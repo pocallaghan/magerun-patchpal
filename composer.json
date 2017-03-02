@@ -1,0 +1,38 @@
+{
+    "name": "pocallaghan/magerun-patchpal",
+    "description": "Tools for checking a patches compatibility with an install",
+    "type": "magerun-plugin",
+    "license": "GPL-3.0",
+    "support": {
+        "issues": "https://github.com/pocallaghan/magerun-patchpal/issues"
+    },
+    "minimum-stability": "dev",
+    "keywords": ["magento", "magerun", "cli"],
+    "authors": [
+        {
+            "name": "Peter O'Callaghan",
+            "email": "contact@peterocallaghan.co.uk"
+        }
+    ],
+    "require-dev": {
+        "mikey179/vfsStream": "1.6.4",
+        "n98/magerun": "dev-master",
+        "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+        "psr-0": {
+            "N98": "vendor/n98/magerun/src"
+        },
+        "psr-4": {
+            "TiB\\PatchPal\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "N98": "vendor/n98/magerun/tests"
+        },
+        "psr-4": {
+            "TiB\\PatchPal\\": "tests"
+        }
+    }
+}

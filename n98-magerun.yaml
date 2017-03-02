@@ -1,0 +1,6 @@
+autoloaders_psr4:
+  TiB\PatchPal\: %module%/src
+
+commands:
+  customCommands:
+    - TiB\PatchPal\Magento\Command\Compat\CodePoolCommand
