@@ -4,5 +4,5 @@ autoloaders_psr4:
 commands:
   customCommands:
     - TiB\PatchPal\Magento\Command\Compat\CodePoolCommand
+    - TiB\PatchPal\Magento\Command\Compat\RewriteCommand
     - TiB\PatchPal\Magento\Command\Compat\ThemeCommand
-    
