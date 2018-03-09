@@ -1,7 +1,7 @@
 {
     "name": "pocallaghan/magerun-patchpal",
     "description": "Tools for checking a patches compatibility with an install",
-    "type": "magerun-plugin",
+    "type": "magento-module",
     "license": "GPL-3.0",
     "support": {
         "issues": "https://github.com/pocallaghan/magerun-patchpal/issues"
