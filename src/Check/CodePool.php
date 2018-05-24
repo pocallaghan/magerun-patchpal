@@ -9,7 +9,7 @@ class CodePool extends AbstractCheck
         // @todo - what other 'type' can be codePool overridden?
         $overloadedFiles = array();
         foreach ($changeSet as $file) {
-            if ( ! preg_match('~^app/code/([^/]+)/([^/]+)/([^/]+)/(Model|Helper|Block)/(.+\.php)$~i', $file, $fileInfo)) {
+            if ( ! preg_match('~^app/code/([^/]+)/([^/]+)/([^/]+)/(Model|Helper|Block|Controller)/(.+\.php)$~i', $file, $fileInfo)) {
                 continue;
             }
 
@@ -26,7 +26,7 @@ class CodePool extends AbstractCheck
                 );
                 $fullPath = $this->basePath . DIRECTORY_SEPARATOR . $path;
                 if (file_exists($fullPath)) {
-                    $overloadedFiles[] = array(
+                    $overloadedFiles[$fileInfo[0]] = array(
                         'original_file' => $fileInfo[0],
                         'overload_file' => $path,
                     );

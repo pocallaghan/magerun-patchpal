@@ -41,12 +41,10 @@ class Theme extends AbstractCheck
                         $bits = explode('/', $changes['file']);
                         $type = array_shift($bits);
                         $file = implode('/', $bits);
-                        $results[] = array(
-                            'area'         => $area,
-                            'custom_theme' => $theme,
-                            'core_theme'   => $changes['theme'],
-                            'type'         => $type,
-                            'file'         => $file,
+                        $original = 'app/design/' . $changes['area'] . '/' . $changes['theme'] . '/' . $changes['file'];
+                        $results[$original] = array(
+                            'original' => $original,
+                            'overload' => 'app/design/' . $area . '/' . $theme . '/' . $changes['file'],
                         );
                     }
                 }

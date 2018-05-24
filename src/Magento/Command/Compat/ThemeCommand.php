@@ -6,6 +6,7 @@ use TiB\PatchPal\Check\Theme;
 use TiB\PatchPal\Magento\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ThemeCommand extends AbstractCommand
@@ -16,31 +17,21 @@ class ThemeCommand extends AbstractCommand
     {
         $this
             ->setName('patch:compat:theme')
-            ->addArgument('file_path', InputArgument::REQUIRED, 'Path to the patch file.')
-            ->setDescription('Check install for theme overloads affecting patch.')
+            ->addArgument('file_path', InputArgument::OPTIONAL, 'Path to the patch file.')
+            ->addOption(
+                'installed',
+                null,
+                InputOption::VALUE_NONE,
+                'Check compatibility of installed patches'
+            )->setDescription('Check install for theme overloads affecting patch.')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->detectMagento($output, true);
-        if (!$this->initMagento()) {
-            return;
-        }
+        parent::initialize($input, $output);
 
         $root = $this->getApplication()->getMagentoRootFolder();
-
-        $touchedFiles = $this->harvestChangeset($input->getArgument('file_path'));
-
-        $check = new Theme($root);
-        $collisions = $check->check($touchedFiles);
-
-        if (count($collisions)) {
-            $headings = array('Area', 'Custom Theme', 'Original Theme', 'Type', 'File');
-            $t = $this->getHelper('table');
-            $t->setHeaders($headings)->renderByFormat($output, $collisions);
-        }
-
-        $output->writeln('<info>Done: <comment>'.sprintf(self::MSG_COMPLETE, count($collisions)).'</comment></info>');
+        $this->check = new Theme($root);
     }
 }

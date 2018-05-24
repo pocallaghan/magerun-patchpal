@@ -16,7 +16,8 @@ class CompatCommand extends AbstractCommand
         $this
             ->setName('patch:compat')
             ->setAliases(array('patch:compat:all'))
-            ->addArgument('file_path', InputArgument::REQUIRED, 'File path to patch file.')
+            ->addArgument('file_path', InputArgument::OPTIONAL, 'File path to patch file.')
+            ->addOption('installed', null, InputOption::VALUE_NONE, 'Whether to check against installed patches.' )
             ->setDescription('Run all compatibility check against current install.')
         ;
     }
@@ -25,7 +26,11 @@ class CompatCommand extends AbstractCommand
     {
         $this->detectMagento($output, true);
         if (!$this->initMagento()) {
-            return;
+            return 1;
+        }
+
+        if (!$this->validateChangesetSource($input, $output)) {
+            return 1;
         }
 
         $commands = array(
@@ -41,8 +46,13 @@ class CompatCommand extends AbstractCommand
 
             $arguments = array(
                 'command'   => $fullName,
-                'file_path' => $input->getArgument('file_path')
             );
+
+            if ($input->getArgument('file_path')) {
+                $arguments['file_path'] = $input->getArgument('file_path');
+            } elseif ($input->getOption('installed')) {
+                $arguments['--installed'] = 1;
+            }
 
             $childInput = new ArrayInput($arguments);
             $returnCode = $command->run($childInput, $output);
@@ -50,4 +60,6 @@ class CompatCommand extends AbstractCommand
 
         $output->writeln('<info>Done: <comment>All compatibility tests complete.</comment></info>');
     }
+
+
 }

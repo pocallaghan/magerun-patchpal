@@ -17,7 +17,7 @@ class Controller extends AbstractCheck
                     $controller = implode('/', array($prefix, $modifiedFile['controller']));
                     $overloadPath =  "app/code/community/{$vendor}/{$module}/controllers/{$controller}Controller.php";
                     if (file_exists(\Mage::getBaseDir() .'/'.$overloadPath)) {
-                        $overloads[] = array(
+                        $overloads[$modifiedFile['filepath']] = array(
                             'core_file' => $modifiedFile['filepath'],
                             'overload_file' => $overloadPath,
                         );

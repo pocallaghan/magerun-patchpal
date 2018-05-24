@@ -29,13 +29,26 @@ class Rewrite extends AbstractCheck
             $className = \Mage::getConfig()->getGroupedClassName(strtolower($type), $shortName . '/' . $classShortName);
             if ($className !== $coreClassName) {
                 // @todo - list all classes between classname and coreClassName with reflection?
-                $overloadedFiles[] = array(
-                    'core_class'     => $coreClassName,
-                    'overload_class' => $className,
+                $overloadedFiles[$file] = array(
+                    'core_class'     => $file,
+                    'overload_class' => $this->getFilePath($className),
                 );
             }
         }
 
         return $overloadedFiles;
+    }
+
+    protected function getFilePath($class)
+    {
+        $file = 'app/code/%s/' . str_replace('_', '/', $class) . '.php';
+        foreach (['local', 'community'] as $codePool) {
+            $poolFile = sprintf($file, $codePool);
+            if (file_exists($this->basePath . '/' . $poolFile))  {
+                return $poolFile;
+            }
+        }
+
+        return $file;
     }
 }
