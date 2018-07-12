@@ -2,6 +2,8 @@
 
 namespace TiB\PatchPal\Magento\Command;
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use N98\Magento\Command\AbstractMagentoCommand;
 
 abstract class AbstractCommand extends AbstractMagentoCommand
