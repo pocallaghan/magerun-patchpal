@@ -21,7 +21,7 @@ class Rewrite extends AbstractCheck
             $classShortName = implode('_', array_map('lcfirst', $classFragments));
             $className      = implode('_', $classFragments);
             $coreClassName  = $moduleName . '_' . $type . '_' . $className;
-            $shortName = lcfirst($module);
+            $shortName = strtolower($module);
             if ($vendor == 'Enterprise') {
                 $shortName = 'enterprise_' . $shortName;
             }
